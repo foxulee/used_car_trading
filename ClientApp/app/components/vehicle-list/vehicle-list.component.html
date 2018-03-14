@@ -1,0 +1,63 @@
+<p>
+  {{queryResult.items | json}}
+</p>
+<p>{{query | json}}</p>
+
+<p>makes: {{makes | json}}</p>
+<h2>Vehicles</h2>
+<P *ngIf="auth.isAuthenticated()">
+  <a class="btn btn-primary" routerLink="/vehicles/new">New</a>
+</P>
+<div class="well">
+  <div class="form-group">
+    <label for="make">Make</label>
+    <select name="" id="make" class="form-control" [(ngModel)]="query.makeId" (change)="onMakeChange(); onQueryChange()">
+      <option value="">All Makes</option>
+      <option value="{{m.id}}" *ngFor="let m of makes">{{m.name}}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="model">Model</label>
+    <select name="" id="model" class="form-control" [(ngModel)]="query.modelId" (change)="onQueryChange()">
+      <option value="">All Models</option>
+      <option value="{{m.id}}" *ngFor="let m of models">{{m.name}}</option>
+    </select>
+  </div>
+  <button class="btn btn-default" (click)="resetQuery()">Reset</button>
+</div>
+<!--  -->
+<table class="table">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th (click)="sortBy('make')">Make
+        <i *ngIf="query.sortBy==='make'" 
+        class="fa" 
+        [class.fa-sort-asc]="query.IsSortAscending" [class.fa-sort-desc]="!query.IsSortAscending"></i>
+      </th>
+      <th (click)="sortBy('model')">Model
+        <i *ngIf="query.sortBy==='model'" 
+        class="fa" 
+        [class.fa-sort-asc]="query.IsSortAscending" [class.fa-sort-desc]="!query.IsSortAscending"></i>
+      </th>
+      <th (click)="sortBy('contactName')">Contact
+        <i *ngIf="query.sortBy==='contactName'" 
+        class="fa" 
+        [class.fa-sort-asc]="query.IsSortAscending" [class.fa-sort-desc]="!query.IsSortAscending"></i>
+      </th>
+      <th>View</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let vehicle of queryResult.items">
+      <td>{{vehicle.id}}</td>
+      <td>{{vehicle.make.name}}</td>
+      <td>{{vehicle.model.name}}</td>
+      <td>{{vehicle.contact.name}}</td>
+      <td><a routerLink="/vehicles/{{vehicle.id}}">View</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<pagination [total-items]="queryResult.totalItems" [page-size]="query.pageSize" (page-changed)="onPageChange($event)"></pagination>
