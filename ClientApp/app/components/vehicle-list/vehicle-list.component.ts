@@ -19,7 +19,7 @@ export class VehicleListComponent implements OnInit {
   };
   queryResult: any = {};
 
-  constructor(private vehicleService: VehicleService, private auth: AuthService) { }
+  constructor(private vehicleService: VehicleService, public auth: AuthService) { }
 
   ngOnInit() {
     this.populateVehicles();

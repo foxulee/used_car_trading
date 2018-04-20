@@ -9,18 +9,18 @@ export class VehicleService {
 
   constructor(
     private http: Http,
-    
+
   ) { }
 
-  private provideTokenInRequesetOptions(): RequestOptionsArgs{
+  private provideTokenInRequesetOptions(): RequestOptionsArgs {
     let token = localStorage.getItem('access_token');
-    
+
     let headers = new Headers({
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     });
     if (token)
-      headers.set('Authorization', "Bearer "+token);
+      headers.set('Authorization', "Bearer " + token);
 
     let options: RequestOptionsArgs = {
       headers: headers
@@ -39,7 +39,7 @@ export class VehicleService {
 
   create(vehicle: any) {
     delete vehicle.id;
-    
+
     return this.http.post(this.vehiclesEndpoint, vehicle, this.provideTokenInRequesetOptions()).map(res => res.json());
   }
 
@@ -57,6 +57,7 @@ export class VehicleService {
     for (var property in obj) {
       var value = obj[property] //obj.property doesn't work
       if (value != null && value != undefined) {
+        // If you're encoding a string to put in a URL component (a querystring parameter), you should call encodeURIComponent.
         parts.push(encodeURIComponent(property) + "=" + encodeURIComponent(value))
       }
     }

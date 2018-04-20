@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,8 +29,8 @@ namespace project_vega
         {
             services.AddMvc();
             //Inject DbContext for using EF
-            //setup connetionString in appsettings.json file
-            //defalt lifetime is scoped
+            //setup connectionString in appsettings.json file
+            //default lifetime is scoped
             services.AddDbContext<VegaDbContext>(options => { options.UseSqlServer(Configuration["ConnectionString:Default"]); });
 
             //inject automapper
@@ -43,14 +39,14 @@ namespace project_vega
             //inject VehicleRepository and UnitOfWork
             //Transient: A separate instance of repository for every use
             //Singleton: A single instance of repository during application lifecycle
-            //Scoped: A single instance of repository for each request
+            //Scoped: A single instance of repository for each request (EF initiate DbContext as Scoped)
             services.AddScoped<IVehicleRepository, VehicleRepository>();
             services.AddScoped<IPhotoRepository, PhotoRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddTransient<IPhotoStorage, FileSystemPhotoStorage>();
 
-            //inject photosetting class
+            //inject photosetting class. Configuration in appsetting.json
             services.Configure<PhotoSettings>(Configuration.GetSection("PhotoSettings"));
 
             #region Authentication Services

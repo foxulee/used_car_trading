@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +6,13 @@ using Microsoft.Extensions.Options;
 using project_vega.Controllers.Resources;
 using project_vega.Core;
 using project_vega.Core.Models;
-using project_vega.Persistence;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace project_vega.Controllers
 {
+    // api/vehicles/1/photos
     [Produces("application/json")]
     [Route("api/vehicles/{vehicleId}/Photos")]
     public class PhotosController : Controller
@@ -55,7 +53,7 @@ namespace project_vega.Controllers
             if (file.Length > _photoSettings.MaxBytes) return BadRequest("Max file size exceeded");
             if (!_photoSettings.IsSupported(file.FileName)) return BadRequest("Invalid file type.");
 
-            var uploadsFolderPath = Path.Combine(_host.WebRootPath, "upload");
+            var uploadsFolderPath = Path.Combine(_host.WebRootPath, "upload");  // wwwroot/upload/
             var photo = await _photoService.UploadPhoto(vehicle, file, uploadsFolderPath);
 
             return Ok(_mapper.Map<Photo, PhotoResource>(photo));

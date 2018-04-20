@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using project_vega.Controllers.Resources;
 using project_vega.Core.Models;
+using System.Linq;
 
 namespace project_vega.Mapping
 {
@@ -35,11 +34,11 @@ namespace project_vega.Mapping
 
             //API Resource to Domain
             CreateMap<SaveVehicleResource, Vehicle>()
-                .ForMember(v => v.Id, opt => opt.Ignore())    //dont map/change id(key) property
+                .ForMember(v => v.Id, opt => opt.Ignore())    //don't map/change id(key) property
                 .ForMember(v => v.ContactName, opt => opt.MapFrom(vr => vr.Contact.Name))
                 .ForMember(v => v.ContactEmail, opt => opt.MapFrom(vr => vr.Contact.Email))
                 .ForMember(v => v.ContactPhone, opt => opt.MapFrom(vr => vr.Contact.Phone))
-                .ForMember(v => v.Features, opt => opt.Ignore())
+                .ForMember(v => v.Features, opt => opt.Ignore())  // Features cannot be automatically matched using MapFrom(), so for mapping Features, Ingore() first, then AfterMap() manually map it
                 .AfterMap((vr, v) =>
                 {
                     //remove unselected features
@@ -50,7 +49,7 @@ namespace project_vega.Mapping
                         v.Features.Remove(r);
                     }
                     //add new features
-                    var addedFeatures = vr.Features.Where(id => !v.Features.Any(f => f.FeatureId == id)).Select(id => new VehicleFeature { FeatureId = id });
+                    var addedFeatures = vr.Features.Where(id => v.Features.All(f => f.FeatureId != id)).Select(id => new VehicleFeature { FeatureId = id });
                     foreach (var af in addedFeatures)
                     {
                         v.Features.Add(af);

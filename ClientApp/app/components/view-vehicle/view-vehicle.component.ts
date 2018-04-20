@@ -16,8 +16,8 @@ import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core'
   providers: [
     //to enable showing progression on downloading/uploading, need to rewrite BrowerXhr class and provide ProgressService
     { provide: BrowserXhr, useClass: BrowserXhrWithProgress },
-    ProgressService,    
-    PhotoService,     
+    ProgressService,
+    PhotoService,
   ],
 })
 export class ViewVehicleComponent implements OnInit {
@@ -29,7 +29,7 @@ export class ViewVehicleComponent implements OnInit {
   subscription: Subscription;
   @ViewChild("fileInput") fileInput: ElementRef;
 
-  
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -37,7 +37,7 @@ export class ViewVehicleComponent implements OnInit {
     private vehicleService: VehicleService,
     private photoService: PhotoService,
     private zone: NgZone,
-    private auth: AuthService,
+    public auth: AuthService,
     private progressService: ProgressService
   ) {
     route.params.subscribe(p => {
@@ -49,7 +49,7 @@ export class ViewVehicleComponent implements OnInit {
     });
   }
 
-  
+
   ngOnInit() {
     this.vehicleService.getVehicle(this.vehicleId).subscribe(
       v => this.vehicle = v,
@@ -77,7 +77,7 @@ export class ViewVehicleComponent implements OnInit {
     //showing progress bar
     this.subscription = this.progressService.startTracking().subscribe(
       progress => {
-        
+
         //put in the zone
         this.zone.run(() => {
           console.log(progress)
@@ -90,12 +90,12 @@ export class ViewVehicleComponent implements OnInit {
       }     //complete  
     );
 
-    let nativeElement = this.fileInput.nativeElement as HTMLInputElement;    
+    let nativeElement = this.fileInput.nativeElement as HTMLInputElement;
     //compiler is showing an error "object is possibly null" on the naitveElement.files[0] part of the photoService.upload statement in uploadPhoto function, simply append "!" between files property and the index like so
     let file = nativeElement.files![0];
     //clearing the filed (file name just uploaded besides the Choose file button)
     nativeElement.value = '';
-    this.photoService.upload(this.vehicleId,file).subscribe(
+    this.photoService.upload(this.vehicleId, file).subscribe(
       photo => {
         this.photos.push(photo);
       },
@@ -110,8 +110,8 @@ export class ViewVehicleComponent implements OnInit {
       });
   }
 
-  cancelUpload(){
-    if(this.subscription){
+  cancelUpload() {
+    if (this.subscription) {
       this.subscription.unsubscribe();
       this.progress = undefined;
     }

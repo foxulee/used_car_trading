@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using project_vega.Core;
+using project_vega.Core.Models;
+using project_vega.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using project_vega.Core.Models;
-using project_vega.Core;
-using project_vega.Extensions;
 
 namespace project_vega.Persistence
 {
@@ -25,6 +25,7 @@ namespace project_vega.Persistence
             {
                 return await _context.Vehicles.FindAsync(id);
             }
+            // eager loading
             return await _context.Vehicles
                 .Include(v => v.Model)
                 .ThenInclude(mk => mk.Make)
@@ -59,10 +60,10 @@ namespace project_vega.Persistence
 
             //paging
             query = query.ApplyPaging(vehicleQuery);
-            
-            
+
+
             result.Items = await query.ToListAsync();
-            
+
 
             return result;
         }

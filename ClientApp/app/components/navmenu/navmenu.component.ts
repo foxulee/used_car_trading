@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
     
-    constructor(private auth: AuthService) {
+    constructor(public auth: AuthService) {
                
     }
 }

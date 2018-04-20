@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using project_vega.Controllers.Resources;
 using project_vega.Core.Models;
 using project_vega.Persistence;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace project_vega.Controllers
 {
@@ -30,7 +27,8 @@ namespace project_vega.Controllers
         [HttpGet]
         public async Task<IEnumerable<MakeResource>> GetMakes()
         {
-            //including nagation property
+            //Include(): including navigation property
+            //Because we don't apply lazy load to the model (no virtual keyword for the navigation property)
             var makes = await _dbContext.Makes.Include(m => m.Models).ToListAsync();
             return _mapper.Map<List<Make>, List<MakeResource>>(makes);
         }

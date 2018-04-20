@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using project_vega.Controllers.Resources;
 using project_vega.Core;
 using project_vega.Core.Models;
-using project_vega.Persistence;
+using System;
+using System.Threading.Tasks;
 
 namespace project_vega.Controllers
 {
@@ -30,11 +24,11 @@ namespace project_vega.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [Authorize]
+        [Authorize(AppPolicies.RequireAdminRole)]
         [HttpPost]
-        public async Task<IActionResult> CreatVehicle([FromBody]SaveVehicleResource vehicleResource)
+        public async Task<IActionResult> CreateVehicle([FromBody]SaveVehicleResource vehicleResource)
         {
-           //server side validation (input validation, checking required, stringlength...)
+            //server side validation (input validation, checking required, stringlength...)
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -87,7 +81,7 @@ namespace project_vega.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehicle(int id)
         {
-            var vehicle = await _vehicleRepository.GetVehicle(id, includeRelated:false);
+            var vehicle = await _vehicleRepository.GetVehicle(id, includeRelated: false);
 
             if (vehicle == null)
             {
@@ -117,9 +111,9 @@ namespace project_vega.Controllers
         [HttpGet]
         public async Task<QueryResultResource<VehicleResource>> GetVehicles([FromQuery]VehicleQueryResource vehicleQueryResource)
         {
-            
+
             var queryResult = await _vehicleRepository.GetVehicles(_iMapper.Map<VehicleQueryResource, VehicleQuery>(vehicleQueryResource));
-            
+
             return _iMapper.Map<QueryResult<Vehicle>, QueryResultResource<VehicleResource>>(queryResult);
         }
     }

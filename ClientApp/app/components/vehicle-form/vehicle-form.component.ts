@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastyService } from 'ng2-toasty';
 import { VehicleService } from './../../Services/vehicle.service';
 import { Subscription } from 'rxjs/Rx';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/Observable/forkJoin';
 
@@ -39,7 +39,7 @@ export class VehicleFormComponent implements OnInit {
 
     route.params.subscribe(p => {
       this.vehicle.id = +p["id"] || 0;
-      console.log(this.vehicle.id);
+      // console.log(this.vehicle.id);
 
     })
 

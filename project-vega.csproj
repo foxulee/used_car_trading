@@ -6,6 +6,7 @@
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
 
+    <!--for storing connectionString using SecretManager-->
     <UserSecretsId>vega-project</UserSecretsId>
   </PropertyGroup>
 
@@ -25,9 +26,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
     <!-- To use dotnetwatch (any changes in the code will automatically refresh browser) , has to add this reference -->
     <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="2.0.0" />
-    <!-- Enable DoNetCli to use EF-->
+    <!-- Enable DotNetCli to use EF-->
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0" />
-    <!-- Enable DoNetCli to use EF-->
+    <!-- Enable DotNetCli to use EF-->
     <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
   </ItemGroup>
 

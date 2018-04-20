@@ -21,7 +21,7 @@ export class AuthService {
     // audience: 'https://foxulee.auth0.com/userinfo', //As opaque strings
     audience: 'https://api.vega.com',   //As a JSON Web Token (JWT), This is the value of the Identifier field of the Auth0 Management API
     redirectUri: 'http://localhost:5619/home',
-    scope: 'openid profile'     //get all user info
+    scope: 'openid profile'     //get user's id and all user info
   });
 
   constructor(private router: Router) {
